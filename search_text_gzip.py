@@ -83,7 +83,7 @@ def main():
 
 if __name__ == "__main__":
     year = 2016
-    sample_size = 1000
+    sample_size = 2000
     try:
         create_dataset(year = year, sample_size=sample_size)
     except:
