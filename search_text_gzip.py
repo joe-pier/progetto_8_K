@@ -62,28 +62,40 @@ def create_dataset(year: str, sample_size: str):
 
 
 def main():
+    gzip_path_name = f"gzip_paths_y{year}_s{sample_size}.csv"
     df = pd.read_csv(f".gzip_paths/gzip_paths_y{year}_s{sample_size}.csv")
     df.drop(list(df.filter(regex='Unnamed')), axis=1, inplace=True)
 
     # append items
+    print("item extraction started")
     start_item_time = time.time()
     year_filtered_df_with_items = search_append_items(df).reset_index(drop=True)
     end_item_time = time.time()
-    print("time for item extraction operation", end_item_time-start_item_time)
+    item_total_time = end_item_time-start_item_time
+    print("time for item extraction operation", item_total_time)
 
     # append bool AGMs:
+    print("AGM extraction started")
     start_AGM_time = time.time()
     year_filtered_df_with_items_AGM_date = search_append_date_AGMs(year_filtered_df_with_items)
     end_AGM_time = time.time()
-    print("time for AGM extraction operation", end_AGM_time-start_AGM_time)
+    agm_total_time = end_AGM_time-start_AGM_time
+    print("time for AGM extraction operation", agm_total_time)
     year_filtered_df_with_items_AGM_date.to_csv(f".OUTPUT/AGMs_excomp_y{year}_s{sample_size}.csv")
+    
+    with open(f"GZIP_y{year}_s{sample_size}/.report.txt", "r") as compression_report:
+        compression_report_data = compression_report.read()
+
+    with open(f".extraction_reports/report_y{year}_s{sample_size}", "w") as report:
+        report.write(f"folder name: {gzip_path_name}\nitem extraction time: {item_total_time}\nAGM extraction time: {agm_total_time}\n{compression_report_data}")
     
 
 
 
 if __name__ == "__main__":
     year = 2016
-    sample_size = 2000
+    sample_size = 1000
+    
     try:
         create_dataset(year = year, sample_size=sample_size)
     except:
