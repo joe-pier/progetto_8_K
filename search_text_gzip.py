@@ -31,7 +31,7 @@ def search_append_items(df_append_items):
 ######################################################
 
 
-def get_AGM_date(txt_file_name):
+def get_AGM_bool(txt_file_name):
     agm_bool = bool(re.search("annual meeting of shareholders",
                     get_text(txt_file_name), re.IGNORECASE))
     return agm_bool
@@ -40,7 +40,7 @@ def get_AGM_date(txt_file_name):
 def search_append_date_AGMs(df_append_date_AGMs):
     with ThreadPoolExecutor(max_workers=64) as executor:
         AGM_date = list(executor.map(
-            get_AGM_date, list(df_append_date_AGMs.path)))
+            get_AGM_bool, list(df_append_date_AGMs.path)))
 
     df_append_date_AGMs["AGM_date"] = list(AGM_date)
     return df_append_date_AGMs
