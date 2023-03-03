@@ -1,0 +1,12 @@
+folder name: gzip_paths_y2016_s2000.csv
+item extraction time: 27.657743453979492 s
+AGM extraction time: 21.786707401275635 s
+total uncompressed data: 1755.264 MB
+total compressed data: 870.005 MB
+total compression: 50.435 %
+compression time: 126.953 s
+
+sample: 2000
+year: 2016
+compression level: 1
+script: compress_dask.py
