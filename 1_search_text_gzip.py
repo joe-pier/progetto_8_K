@@ -25,9 +25,11 @@ def get_items(txt_file_name):
 
 def get_items_exec_comp(txt_file_name):
     """ return presence/absence of items related to executive compensation """
-    pattern_get_items_exec_comp = "Item 5.02"
+    print(get_items_exec_comp.count, txt_file_name, end = "\r")
+    pattern_get_items_exec_comp = "item 5.02"
     item_exec_comp = bool(re.findall(pattern_get_items_exec_comp,
                  get_text(txt_file_name), re.IGNORECASE))
+    get_items_exec_comp.count += 1
     return item_exec_comp
 
 def search_append_items(df_append_items):
@@ -39,14 +41,13 @@ def search_append_items(df_append_items):
 
 ######################################################
 
-
 def get_AGM_bool(txt_file_name):
     """ return presence or absence of information related to AGMs """
+    print(get_AGM_bool.count, txt_file_name, end = "\r")
     pattern_get_AGM_cool = "annual meeting of shareholders"
     agm_bool = bool(re.search(pattern_get_AGM_cool,
                     get_text(txt_file_name), re.IGNORECASE))
     return agm_bool
-
 
 def search_append_AGMs(df_append_date_AGMs):
     """ multithreading function (get_AGM_bool) on documents"""
@@ -64,14 +65,13 @@ def create_dataset(year: str, sample_size: str):
     path = f"GZIP_y{year}_s{sample_size}/"
     dl = os.listdir(path)[1::] #exclude the compression report
     dl_path = [path+i for i in dl]
-    d["path"]= dl_path
+    d["path"] = dl_path
 
     df = pd.DataFrame(d)
     df.to_csv(f".gzip_paths/gzip_paths_y{year}_s{sample_size}.csv")
 
 
 ######################################################
-
 
 def main():
     gzip_path_name = f"gzip_paths_y{year}_s{sample_size}.csv"
@@ -106,11 +106,11 @@ def main():
     
 
 
-
 if __name__ == "__main__":
-    year = 2016
-    sample_size = 30_000
-    
+    year = 2017
+    sample_size = 70_000
+    get_items_exec_comp.count = 0
+    get_AGM_bool.count = 0
     try:
         if f"gzip_paths_y{year}_s{sample_size}.csv" in os.listdir(".gzip_paths"):
             pass
