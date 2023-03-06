@@ -30,7 +30,8 @@ def add_data(data):
             # Use a parameterized query to insert binary data
             query = text(
                 "INSERT INTO `project_8k`.`GZIP_data`(`file`, `path`, `cik`,`year`,`status`) VALUES (:file, :path, :cik, :year, :status)")
-            conn.execute(query, file=file,  path=path, status=1, year = year, cik = cik)
+            conn.execute(query, file=file,  path=path,
+                         status=1, year=year, cik=cik)
             return data["size"]
     except:
         print("error on")
@@ -38,7 +39,7 @@ def add_data(data):
         print("\n")
         query = text(
             "INSERT INTO `project_8k`.`GZIP_data`(`path`, `cik`,`year`,`status`) VALUES (:path,:cik, :year,  :status)")
-        conn.execute(query,  path=path, status=0,  year = year, cik = cik)
+        conn.execute(query,  path=path, status=0,  year=year, cik=cik)
         return data["size"]
 
 
@@ -52,11 +53,11 @@ def convert_to_binary(filename):
 def get_path_file_from_fs(filename):
     """ get the path, gzip and size of the file for the specific filename """
     d = {}
-    filename_cik_serial_date = re.findall("\d+",filename)
+    filename_cik_serial_date = re.findall("\d+", filename)
     d["cik"] = filename_cik_serial_date[0].zfill(10)
     d["year"] = filename_cik_serial_date[-3]
-    #d["serial"] = filename_cik_serial_date[-4]
-    #d["date"] = filename_cik_serial_date[-3::]
+    # d["serial"] = filename_cik_serial_date[-4]
+    # d["date"] = filename_cik_serial_date[-3::]
     d["path"] = filename
     d["file"] = convert_to_binary(os.path.join(input_folder, filename))
     d["size"] = get_size(os.path.join(input_folder, filename))
