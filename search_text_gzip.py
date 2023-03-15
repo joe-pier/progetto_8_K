@@ -31,12 +31,12 @@ def get_items_exec_comp(txt_file_name):
     get_items_exec_comp.count += 1
     return item_exec_comp
 
-def search_append_items(df_append_items):
+def search_append_items(df):
     """ multithreading function (get_items, get_items_exec_comp) on documents """
     with ThreadPoolExecutor(max_workers=64) as executor:
-        items = list(executor.map(get_items_exec_comp, list(df_append_items.path)))
-    df_append_items["items"] = items
-    return df_append_items
+        items = list(executor.map(get_items_exec_comp, list(df.path)))
+    df["items"] = items
+    return df
 
 ######################################################
 
@@ -48,13 +48,13 @@ def get_AGM_bool(txt_file_name):
                     get_text(txt_file_name), re.IGNORECASE))
     return agm_bool
 
-def search_append_AGMs(df_append_date_AGMs):
+def search_append_AGMs(df):
     """ multithreading function (get_AGM_bool) on documents"""
     with ThreadPoolExecutor(max_workers=64) as executor:
         AGM_date = list(executor.map(
-            get_AGM_bool, list(df_append_date_AGMs.path)))
-    df_append_date_AGMs["AGM"] = list(AGM_date)
-    return df_append_date_AGMs
+            get_AGM_bool, list(df.path)))
+    df["AGM"] = list(AGM_date)
+    return df
 
 ######################################################
 
@@ -105,8 +105,8 @@ def main():
 
 
 if __name__ == "__main__":
-    year = 2017
-    sample_size = 70_000
+    year = 2016
+    sample_size = 1000
     get_items_exec_comp.count = 0
     get_AGM_bool.count = 0
     try:
